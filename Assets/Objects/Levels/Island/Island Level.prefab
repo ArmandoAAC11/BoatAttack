@@ -168,6 +168,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lighting
       objectReference: {fileID: 0}
+    - target: {fileID: 4503953258026586762, guid: af7e3352382514479b91bf48c1e8f88e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4503953258026586773, guid: af7e3352382514479b91bf48c1e8f88e,
         type: 3}
       propertyPath: m_RootOrder
@@ -224,6 +229,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4503953259299706710, guid: af7e3352382514479b91bf48c1e8f88e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4503953259345309436, guid: af7e3352382514479b91bf48c1e8f88e,
         type: 3}
       propertyPath: m_IsActive
       value: 1

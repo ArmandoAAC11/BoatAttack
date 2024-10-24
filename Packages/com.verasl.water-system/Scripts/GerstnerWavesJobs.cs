@@ -30,6 +30,8 @@ namespace WaterSystem
 
         public static void Init()
         {
+            if (Debug.isDebugBuild)
+                Debug.Log("Initializing Gerstner Waves Jobs");
             //Wave data
             _waveCount = Water.Instance._waves.Length;
             _waveData = new NativeArray<Wave>(_waveCount, Allocator.Persistent);
@@ -47,11 +49,12 @@ namespace WaterSystem
 
         public static void Cleanup()
         {
+            if (Debug.isDebugBuild)
+                Debug.Log("Cleaning up Gerstner Wave Jobs");
             _waterHeightHandle.Complete();
 
             //Cleanup native arrays
             _waveData.Dispose();
-
             _positions.Dispose();
             _wavePos.Dispose();
             _waveNormal.Dispose();
@@ -68,9 +71,8 @@ namespace WaterSystem
             else
             {
                 if (_positionCount + samplePoints.Length >= _positions.Length) return;
-                
+
                 offsets = new int2(_positionCount, _positionCount + samplePoints.Length);
-                //Debug.Log("<color=yellow>Adding Object:" + guid + " to the registry at offset:" + offsets + "</color>");
                 Registry.Add(guid, offsets);
                 _positionCount += samplePoints.Length;
             }
@@ -79,9 +81,9 @@ namespace WaterSystem
         public static void GetData(int guid, ref float3[] outPos, ref float3[] outNorm)
         {
             if (!Registry.TryGetValue(guid, out var offsets)) return;
-            
+
             _wavePos.Slice(offsets.x, offsets.y - offsets.x).CopyTo(outPos);
-            if(outNorm != null)
+            if (outNorm != null)
                 _waveNormal.Slice(offsets.x, offsets.y - offsets.x).CopyTo(outNorm);
         }
 
@@ -89,22 +91,28 @@ namespace WaterSystem
         public static void UpdateHeights()
         {
             if (_processing) return;
-            
+
             _processing = true;
 
+#if STATIC_EVERYTHING
+            var t = 0.0f;
+#else
+            var t = Time.time;
+#endif
+
             // Buoyant Object Job
-            var waterHeight = new GerstnerWavesJobs.HeightJob()
+            var waterHeight = new HeightJob()
             {
                 WaveData = _waveData,
                 Position = _positions,
                 OffsetLength = new int2(0, _positions.Length),
-                Time = Time.time,
+                Time = t,
                 OutPosition = _wavePos,
                 OutNormal = _waveNormal
             };
-                
+
             _waterHeightHandle = waterHeight.Schedule(_positionCount, 32);
-                
+
             JobHandle.ScheduleBatchedJobs();
 
             _firstFrame = false;
@@ -113,7 +121,7 @@ namespace WaterSystem
         private static void CompleteJobs()
         {
             if (_firstFrame || !_processing) return;
-            
+
             _waterHeightHandle.Complete();
             _processing = false;
         }
@@ -141,7 +149,7 @@ namespace WaterSystem
             public void Execute(int i)
             {
                 if (i < OffsetLength.x || i >= OffsetLength.y - OffsetLength.x) return;
-                
+
                 var waveCountMulti = 1f / WaveData.Length;
                 var wavePos = new float3(0f, 0f, 0f);
                 var waveNorm = new float3(0f, 0f, 0f);
@@ -193,5 +201,6 @@ namespace WaterSystem
                 OutNormal[i] = math.normalize(waveNorm.xzy);
             }
         }
+
     }
 }
