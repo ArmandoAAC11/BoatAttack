@@ -169,9 +169,7 @@ namespace WaterSystem
                     break;
                 }
                 case BuoyancyType.Physical:
-                    //LocalToWorldJob.CompleteJob(_guid);
                     BuoyancyForce(Vector3.zero, _velocity[0], Heights[0].y + waterLevelOffset, ref submergedAmount, ref _debugInfo[0]);
-                    //UpdateDrag(submergedAmount);
                     break;
                 case BuoyancyType.NonPhysical:
                     break;
