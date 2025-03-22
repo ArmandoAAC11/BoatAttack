@@ -44,7 +44,7 @@ namespace BoatAttack
 
         private void ResetBoat(InputAction.CallbackContext context)
         {
-            controller.ResetPosition();
+            //controller.ResetPosition();
         }
 
         private void FreezeBoat(InputAction.CallbackContext context)
@@ -64,7 +64,7 @@ namespace BoatAttack
         {
             var value = context.ReadValue<float>();
             Debug.Log($"changing day time, input:{value}");
-            DayNightController.SelectPreset(value);
+            //DayNightController.SelectPreset(value);
         }
 
         void FixedUpdate()

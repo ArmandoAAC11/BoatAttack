@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Cinemachine;
-using BoatAttack.UI;
+//using BoatAttack.UI;
 using Object = UnityEngine.Object;
 
 namespace BoatAttack
@@ -21,19 +21,19 @@ namespace BoatAttack
         private Matrix4x4 _spawnPosition;
 
         // RaceStats
-        [NonSerialized] public int Place = 0;
-        [NonSerialized] public float LapPercentage;
-        [NonSerialized] public int LapCount;
-        [NonSerialized] public bool MatchComplete;
-        private int _wpCount = -1;
-        private WaypointGroup.Waypoint _lastCheckpoint;
-        private WaypointGroup.Waypoint _nextCheckpoint;
+        //[NonSerialized] public int Place = 0;
+        //[NonSerialized] public float LapPercentage;
+        //[NonSerialized] public int LapCount;
+        //[NonSerialized] public bool MatchComplete;
+        //private int _wpCount = -1;
+        //private WaypointGroup.Waypoint _lastCheckpoint;
+        //private WaypointGroup.Waypoint _nextCheckpoint;
 
-        [NonSerialized] public readonly List<float> SplitTimes = new List<float>();
+        //[NonSerialized] public readonly List<float> SplitTimes = new List<float>();
 
         public CinemachineVirtualCamera cam;
         private float _camFovVel;
-        [NonSerialized] public RaceUI RaceUi;
+        //[NonSerialized] public RaceUI RaceUi;
         private Object _controller;
         private int _playerIndex;
 
@@ -58,7 +58,7 @@ namespace BoatAttack
 
         void SetupController(bool isHuman)
         {
-            var controllerType = isHuman ? typeof(HumanController) : typeof(AiController);
+            var controllerType = isHuman ? typeof(HumanController) : typeof(HumanController);
             // If controller exists then make sure it's teh right one, if not add it
             if (_controller)
             {
@@ -74,13 +74,13 @@ namespace BoatAttack
 
         private void Update()
         {
-            UpdateLaps();
+            /*UpdateLaps();
 
             if (RaceUi)
             {
                 RaceUi.UpdatePlaceCounter(Place);
                 RaceUi.UpdateSpeed(engine.VelocityMag);
-            }
+            }*/
         }
 
         private void LateUpdate()
@@ -94,7 +94,7 @@ namespace BoatAttack
 
         private void FixedUpdate()
         {
-            if (!RaceManager.RaceStarted)
+            /*if (!RaceManager.RaceStarted)
             {
                 // race not started, make sure to keep boat fairly aligned.
                 var target = WaypointGroup.Instance.StartingPositions[_playerIndex];
@@ -109,10 +109,10 @@ namespace BoatAttack
 
                 engine.RB.MoveRotation(Quaternion.LookRotation(Vector3.Slerp(currentForward, targetForward, 0.1f * Time.fixedDeltaTime)));
 
-            }
+            }*/
         }
 
-        private void UpdateLaps()
+        /*private void UpdateLaps()
         {
             LapPercentage = WaypointGroup.Instance.GetPercentageAroundTrack(transform.position);
             var lowPercentage = _lastCheckpoint?.normalizedDistance ?? 0f;
@@ -123,11 +123,11 @@ namespace BoatAttack
             {
                 RaceUi.UpdateLapCounter(LapCount);
             }
-        }
-
+        }*/
+        
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.CompareTag("waypoint") || MatchComplete) return;
+            /*if (!other.CompareTag("waypoint") || MatchComplete) return;
 
             var wp = WaypointGroup.Instance.GetTriggersWaypoint(other as BoxCollider);
             var wpIndex = WaypointGroup.Instance.GetWaypointIndex(wp);
@@ -136,11 +136,11 @@ namespace BoatAttack
                 _lastCheckpoint = wp;
                 _nextCheckpoint = WaypointGroup.Instance.GetNextCheckpoint(wpIndex);
             }
-
-            EnteredWaypoint(wpIndex, wp.isCheckpoint);
+            
+            EnteredWaypoint(wpIndex, wp.isCheckpoint);*/
         }
 
-        private void EnteredWaypoint(int index, bool checkpoint)
+        /*private void EnteredWaypoint(int index, bool checkpoint)
         {
             var count = WaypointGroup.Instance.WPs.Count;
             var nextWp = (int) Mathf.Repeat(_wpCount + 1, count);
@@ -158,15 +158,15 @@ namespace BoatAttack
             RaceManager.BoatFinished(_playerIndex);
             MatchComplete = true;
 
-        }
+        }*/
 
-        [ContextMenu("Randomize")]
+        /*[ContextMenu("Randomize")]
         private void ColorizeInvoke()
         {
             Colorize(Color.black, Color.black, true);
-        }
+        }*/
 
-        private void Colorize(Color primaryColor, Color trimColor, bool random = false)
+        /*private void Colorize(Color primaryColor, Color trimColor, bool random = false)
         {
             var livery = new BoatLivery
             {
@@ -174,20 +174,20 @@ namespace BoatAttack
                 trimColor = random ? ConstantData.GetRandomPaletteColor : trimColor
             };
             Colorize(livery);
-        }
+        }*/
 
         /// <summary>
         /// This sets both the primary and secondary colour and assigns via a MPB
         /// </summary>
-        private void Colorize(BoatLivery livery)
+        /*private void Colorize(BoatLivery livery)
         {
             boatRenderer?.material?.SetColor(LiveryPrimary, livery.primaryColor);
             engineRenderer?.material?.SetColor(LiveryPrimary, livery.primaryColor);
             boatRenderer?.material?.SetColor(LiveryTrim, livery.trimColor);
             engineRenderer?.material?.SetColor(LiveryTrim, livery.trimColor);
-        }
+        }*/
 
-        public void ResetPosition()
+        /*public void ResetPosition()
         {
             if (WaypointGroup.Instance)
             {
@@ -199,7 +199,7 @@ namespace BoatAttack
                 engine.RB.position = resetPoint;
                 engine.RB.rotation = resetMatrix.rotation;
             }
-        }
+        }*/
     }
 
     [Serializable]
