@@ -45,6 +45,7 @@ namespace BoatAttack
 		{
             _spawnPosition = transform.localToWorldMatrix;
             TryGetComponent(out engine.RB);
+            Setup();
         }
 
         public void Setup(int player = 1, bool isHuman = true, BoatLivery livery = new BoatLivery())
